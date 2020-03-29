@@ -2,3 +2,15 @@
   font-family: sans-serif;
   text-align: center;
 }
+
+.btn--like, .btn--dislike {
+  color: white;
+}
+
+.btn--like {
+  background-color: blue;
+}
+
+.btn--dislike {
+  background-color: red;
+}
