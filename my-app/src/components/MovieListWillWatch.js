@@ -7,9 +7,9 @@ class MovieListWillWatch extends React.Component {
       <div>
         <h4>Will Watch: <span>{selected.length}</span> movies</h4>
         <ul className="list-group">
-          {selected.map((movie, index) => {
+          {selected.map(movie => {
             return (
-              <li key={`selected-${index}`} className="list-group-item">
+              <li key={`selected-${movie.id}`} className="list-group-item">
                 <div className="d-flex justify-content-between">
                   <div>{movie.title}</div>
                   <div>{movie.vote_average}</div>

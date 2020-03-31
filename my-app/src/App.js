@@ -16,15 +16,27 @@ class App extends React.Component {
   selectMovie = (data, selected) => {
     let newSelected;
     if (selected) {
-      newSelected = [...this.state.selected, data];
+      newSelected = this.state.selected.slice();
+      newSelected.push(data);
     } else {
-      const idx = this.state.selected.findIndex(item => {
-        return item.id === data.id;
+      newSelected = this.state.selected.filter(item => {
+        return item.id !== data.id;
       });
-      newSelected = [...this.state.selected];
-      newSelected.splice(idx, 1);
     }
     this.setState({
+      selected: newSelected,
+    });
+  };
+
+  deleteMovie = (id) => {
+    let newMovies = this.state.movies.filter(item => {
+      return item.id !== id;
+    });
+    let newSelected = this.state.selected.filter(item => {
+      return item.id !== id;
+    });
+    this.setState({
+      movies: newMovies,
       selected: newSelected,
     });
   };
@@ -34,12 +46,19 @@ class App extends React.Component {
       <div className="container mt-4">
         <div className="row">
           <div className='col-md-3 justify-content-between align-items-center'>
-            <MovieListWillWatch selected={this.state.selected} />
+            <MovieListWillWatch selected={this.state.selected}/>
           </div>
           <div className='col-md-9 justify-content-between align-items-center order-md-first'>
             <div className="row">
-              {this.state.movies.map((movie, index) => {
-                return <MovieCard key={`movie-${index}`} data={movie} selectMovie={this.selectMovie}>{movie.title}</MovieCard>
+              {this.state.movies.map(movie => {
+                return (
+                  <MovieCard
+                    key={`movie-${movie.id}`}
+                    movie={movie}
+                    selectMovie={this.selectMovie}
+                    deleteMovie={this.deleteMovie}
+                  />
+                );
               })}
             </div>
           </div>
