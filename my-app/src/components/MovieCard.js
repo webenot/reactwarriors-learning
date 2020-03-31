@@ -11,34 +11,44 @@ class MovieCard extends React.Component {
   }
 
   selectMovie = () => {
+    const selected = !this.state.selected;
     this.setState({
-      selected: !this.state.selected,
+      selected,
     });
-    this.props.selectMovie(this.props.data, !this.state.selected);
+    this.props.selectMovie(this.props.movie, selected);
   };
 
   render() {
-    const { data } = this.props;
+    const { movie } = this.props;
     return (
       <div className="col-md-4 mb-4">
         <div className="card">
           <img
             className="card-img-top"
-            src={`${imageLink}${data.backdrop_path ||
-            data.poster_path}`}
+            src={`${imageLink}${movie.backdrop_path ||
+            movie.poster_path}`}
             alt=""
           />
+          <div className="card-header">{movie.title}</div>
           <div className="card-body">
-            <h6 className="card-title">{data.title}</h6>
             <div className="d-flex justify-content-between align-items-center">
-              <p className="mb-0">Rating: {data.vote_average}</p>
+              <p className="mb-0">Rating: {movie.vote_average}</p>
+            </div>
+          </div>
+          <div className="card-body">
+            <div className="d-flex justify-content-between align-items-center">
               <button
                 type="button"
-                className={this.state.selected ? 'btn btn-success': 'btn btn-secondary'}
+                className={`btn-sm btn btn-${this.state.selected ? 'success': 'secondary'}`}
                 onClick={this.selectMovie}
               >
                 Will Watch
               </button>
+              <button
+                type="button"
+                className="btn btn-danger btn-sm"
+                onClick={() => this.props.deleteMovie(movie.id)}
+              >Delete movie</button>
             </div>
           </div>
         </div>
