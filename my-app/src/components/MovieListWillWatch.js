@@ -3,9 +3,10 @@ import React from 'react';
 class MovieListWillWatch extends React.Component {
   render() {
     const { selected } = this.props;
+    const selectedCount = selected.length;
     return (
       <div>
-        <h4>Will Watch: <span>{selected.length}</span> movies</h4>
+        <h4>Will Watch: <span>{selectedCount}</span> movie{selectedCount === 1 ? '' : 's'}</h4>
         <ul className="list-group">
           {selected.map(movie => {
             return (

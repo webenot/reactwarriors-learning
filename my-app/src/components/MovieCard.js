@@ -11,23 +11,24 @@ class MovieCard extends React.Component {
   }
 
   selectMovie = () => {
+    const { movie, selectMovie } = this.props;
     const selected = !this.state.selected;
     this.setState({
       selected,
     });
-    this.props.selectMovie(this.props.movie, selected);
+    selectMovie(movie, selected);
   };
 
   render() {
-    const { movie } = this.props;
+    const { movie, deleteMovie } = this.props;
     return (
-      <div className="col-md-4 mb-4">
+      <div className="col-md-6 mb-4 col-xl-4">
         <div className="card">
           <img
             className="card-img-top"
             src={`${imageLink}${movie.backdrop_path ||
             movie.poster_path}`}
-            alt=""
+            alt={movie.title}
           />
           <div className="card-header">{movie.title}</div>
           <div className="card-body">
@@ -41,13 +42,11 @@ class MovieCard extends React.Component {
                 type="button"
                 className={`btn-sm btn btn-${this.state.selected ? 'success': 'secondary'}`}
                 onClick={this.selectMovie}
-              >
-                Will Watch
-              </button>
+              >Will Watch</button>
               <button
                 type="button"
                 className="btn btn-danger btn-sm"
-                onClick={() => this.props.deleteMovie(movie.id)}
+                onClick={deleteMovie.bind(null, movie.id)}
               >Delete movie</button>
             </div>
           </div>
