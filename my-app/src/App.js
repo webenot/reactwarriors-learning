@@ -1,23 +1,36 @@
 import React from 'react';
-import moviesData from './moviesData';
+
 import MovieCard from './components/MovieCard';
 import MovieListWillWatch from './components/MovieListWillWatch';
 import './App.css';
+import { API_KEY3, API_URL, LANG } from './config';
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      movies: moviesData,
+      movies: [],
       selected: [],
     };
+  }
+
+  componentDidMount() {
+    fetch(`${API_URL}discover/movie?api_key=${API_KEY3}&language=${LANG}`)
+      .then((response) => {
+        return response.json();
+      })
+      .then(data => {
+        this.setState({
+          movies: data.results,
+        });
+      });
   }
 
   selectMovie = (data, selected) => {
     const { selected: selectedMovies } = this.state;
     let newSelected;
     if (selected) {
-      newSelected = [...selectedMovies, data];
+      newSelected = [ ...selectedMovies, data ];
     } else {
       newSelected = selectedMovies.filter(item => {
         return item.id !== data.id;

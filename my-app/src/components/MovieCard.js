@@ -1,6 +1,6 @@
 import React from 'react';
 
-const imageLink = 'https://image.tmdb.org/t/p/w500';
+import { IMAGES_BASE } from '../config';
 
 class MovieCard extends React.Component {
   constructor() {
@@ -24,12 +24,14 @@ class MovieCard extends React.Component {
     return (
       <div className="col-md-6 mb-4 col-xl-4">
         <div className="card">
-          <img
-            className="card-img-top"
-            src={`${imageLink}${movie.backdrop_path ||
-            movie.poster_path}`}
-            alt={movie.title}
-          />
+          {movie.backdrop_path || movie.poster_path ? (
+            <img
+              className="card-img-top"
+              src={`${IMAGES_BASE}${movie.backdrop_path ||
+              movie.poster_path}`}
+              alt={movie.title}
+            />
+          ) : ''}
           <div className="card-header">{movie.title}</div>
           <div className="card-body">
             <div className="d-flex justify-content-between align-items-center">
