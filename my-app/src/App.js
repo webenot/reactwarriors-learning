@@ -4,6 +4,7 @@ import MovieCard from './components/MovieCard';
 import MovieListWillWatch from './components/MovieListWillWatch';
 import './App.css';
 import { API_KEY3, API_URL, LANG } from './config';
+import MovieTabs from './components/MovieTabsComponent/MovieTabs';
 
 class App extends React.Component {
   constructor() {
@@ -11,11 +12,16 @@ class App extends React.Component {
     this.state = {
       movies: [],
       selected: [],
+      sort_by: 'popularity.desc'
     };
   }
 
   componentDidMount() {
-    fetch(`${API_URL}discover/movie?api_key=${API_KEY3}&language=${LANG}`)
+    this.getMoviesData(this.state.sort_by);
+  }
+
+  getMoviesData(sort_by) {
+    fetch(`${API_URL}discover/movie?api_key=${API_KEY3}&language=${LANG}&sort_by=${sort_by}`)
       .then((response) => {
         return response.json();
       })
@@ -24,7 +30,7 @@ class App extends React.Component {
           movies: data.results,
         });
       });
-  }
+  };
 
   selectMovie = (data, selected) => {
     const { selected: selectedMovies } = this.state;
@@ -56,15 +62,30 @@ class App extends React.Component {
     });
   };
 
+  selectSortBy = (value) => {
+    this.setState({
+      sort_by: value,
+    });
+    this.getMoviesData(value);
+  };
+
   render() {
-    const { movies, selected } = this.state;
+    const { movies, selected, sort_by } = this.state;
     return (
       <div className="container mt-4">
         <div className="row">
-          <div className='col-lg-3 justify-content-between align-items-center mb-4'>
+          <div className="col-lg-3 justify-content-between align-items-center mb-4">
             <MovieListWillWatch selected={selected}/>
           </div>
-          <div className='col-lg-9 justify-content-between align-items-center order-lg-first'>
+          <div className="col-lg-9 justify-content-between align-items-center order-lg-first">
+            <div className="row mb-4">
+              <div className="col-12">
+                <MovieTabs
+                  sort_by={sort_by}
+                  selectSortBy={this.selectSortBy}
+                />
+              </div>
+            </div>
             <div className="row">
               {movies.map(movie => {
                 return (

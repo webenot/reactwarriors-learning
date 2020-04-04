@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 
 import { IMAGES_BASE } from '../config';
@@ -42,7 +43,12 @@ class MovieCard extends React.Component {
             <div className="d-flex justify-content-between align-items-center">
               <button
                 type="button"
-                className={`btn-sm btn btn-${this.state.selected ? 'success': 'secondary'}`}
+                className={classNames({
+                  btn: true,
+                  'btn-sm': true,
+                  'btn-success': this.state.selected,
+                  'btn-secondary': !this.state.selected,
+                })}
                 onClick={this.selectMovie}
               >Will Watch</button>
               <button
