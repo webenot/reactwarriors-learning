@@ -1,6 +1,11 @@
 import React from 'react';
 
 class TabItem extends React.Component {
+
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    return nextProps.class !== this.props.class;
+  }
+
   render() {
     return (
       <li className="nav-item">
