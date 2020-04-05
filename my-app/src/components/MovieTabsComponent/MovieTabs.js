@@ -8,20 +8,15 @@ class MovieTabs extends React.Component {
     super();
     this.state = {
       sortTabs: [
-        {
-          title: 'Popularity desc',
-          value: 'popularity.desc'
-        },
-        {
-          title: 'Revenue desc',
-          value: 'revenue.desc'
-        },
-        {
-          title: 'Vote Average desc',
-          value: 'vote_average.desc'
-        },
+        { title: 'Popularity desc', value: 'popularity.desc' },
+        { title: 'Revenue desc', value: 'revenue.desc' },
+        { title: 'Vote Average desc', value: 'vote_average.desc' },
       ],
     };
+  }
+
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    return nextProps.sort_by !== this.props.sort_by;
   }
 
   handleClick = (value) => () => this.props.selectSortBy(value);

@@ -17,11 +17,17 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.getMoviesData(this.state.sort_by);
+    this.getMoviesData();
   }
 
-  getMoviesData(sort_by) {
-    fetch(`${API_URL}discover/movie?api_key=${API_KEY3}&language=${LANG}&sort_by=${sort_by}`)
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevState.sort_by !== this.state.sort_by) {
+      this.getMoviesData();
+    }
+  }
+
+  getMoviesData() {
+    fetch(`${API_URL}discover/movie?api_key=${API_KEY3}&language=${LANG}&sort_by=${this.state.sort_by}`)
       .then((response) => {
         return response.json();
       })
@@ -66,7 +72,6 @@ class App extends React.Component {
     this.setState({
       sort_by: value,
     });
-    this.getMoviesData(value);
   };
 
   render() {
