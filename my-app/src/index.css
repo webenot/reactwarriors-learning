@@ -11,3 +11,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+button.page-link.non-link {
+  border: unset;
+  color: inherit;
+  cursor: unset;
+}
+
+button.page-link {
+  outline: none;
+}
+
+button.page-link.non-link:hover {
+  background-color: transparent;
+}

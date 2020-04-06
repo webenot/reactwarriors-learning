@@ -5,36 +5,49 @@ import MovieListWillWatch from './components/MovieListWillWatch';
 import './App.css';
 import { API_KEY3, API_URL, LANG } from './config';
 import MovieTabs from './components/MovieTabsComponent/MovieTabs';
+import Pagination from './components/Pagination';
 
 class App extends React.Component {
-  constructor() {
+  constructor () {
     super();
+    window.history.pushState({}, '', '/');
     this.state = {
       movies: [],
       selected: [],
-      sort_by: 'popularity.desc'
+      sort_by: 'popularity.desc',
+      pages: 0,
+      page: 1,
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getMoviesData();
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevState.sort_by !== this.state.sort_by) {
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    if (prevState.page !== this.state.page) {
+      if (this.state.page !== 1) {
+        window.history.pushState({ page: this.state.page }, '', `/?page=${this.state.page}`);
+      } else {
+        window.history.pushState({}, '', '/');
+      }
+    }
+    if (prevState.sort_by !== this.state.sort_by || prevState.page !== this.state.page) {
       this.getMoviesData();
     }
   }
 
-  getMoviesData() {
-    fetch(`${API_URL}discover/movie?api_key=${API_KEY3}&language=${LANG}&sort_by=${this.state.sort_by}`)
+  getMoviesData () {
+    fetch(`${API_URL}discover/movie?api_key=${API_KEY3}&language=${LANG}&sort_by=${this.state.sort_by}&page=${this.state.page}`)
       .then((response) => {
         return response.json();
       })
       .then(data => {
         this.setState({
           movies: data.results,
+          pages: data.total_pages,
         });
+        window.scrollTo(0, 0);
       });
   };
 
@@ -71,11 +84,18 @@ class App extends React.Component {
   selectSortBy = (value) => {
     this.setState({
       sort_by: value,
+      page: 1
     });
   };
 
-  render() {
-    const { movies, selected, sort_by } = this.state;
+  selectPage = (selectedPage) => {
+    this.setState({
+      page: selectedPage,
+    });
+  };
+
+  render () {
+    const { movies, selected, sort_by, page, pages } = this.state;
     return (
       <div className="container mt-4">
         <div className="row">
@@ -102,6 +122,13 @@ class App extends React.Component {
                   />
                 );
               })}
+            </div>
+            <div className="row justify-content-center">
+              <Pagination
+                page={page}
+                pages={pages}
+                selectPage={this.selectPage}
+              />
             </div>
           </div>
         </div>
